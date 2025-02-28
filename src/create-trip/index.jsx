@@ -214,10 +214,12 @@ function CreateTrip() {
         </Button>
       </div>
       <Dialog open={openDialog}>
-        <DialogContent>
+        <DialogContent onClick={() => setOpenDialog(false)}>
           <DialogHeader>
             <DialogDescription>
-              <img src="/logo.svg" />
+              <h1 className="font-semibold text-3xl text-[#1b9dfb]">
+                NavAIgate
+              </h1>
               <h2 className="font-bold text-lg mt-7">Sign In With Google</h2>
               <p>Sign in with Google authentication to generate your trip</p>
               <Button
