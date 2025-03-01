@@ -53,7 +53,6 @@ function CreateTrip() {
 
     if (!user) {
       setOpenDialog(true);
-      return;
     }
 
     if (formData?.numberOfDays > 7) {
@@ -87,7 +86,6 @@ function CreateTrip() {
 
     const result = await chatSession.sendMessage(FINAL_PROMPT);
 
-    console.log(result?.response?.text());
     setLoading(false);
     SaveAiTrip(result?.response?.text());
   };
@@ -100,7 +98,7 @@ function CreateTrip() {
     await setDoc(doc(db, "AiTrips", docId), {
       userSelection: formData,
       tripData: JSON.parse(TripData),
-      userEmail: user?.email,
+      userEmail: user ? user.email : "NO_USER",
       id: docId,
     });
     setLoading(false);
@@ -214,21 +212,32 @@ function CreateTrip() {
         </Button>
       </div>
       <Dialog open={openDialog}>
-        <DialogContent onClick={() => setOpenDialog(false)}>
+        <DialogContent onClick={() => setOpenDialog(false)} className="">
           <DialogHeader>
             <DialogDescription>
               <h1 className="font-semibold text-3xl text-[#1b9dfb]">
                 NavAIgate
               </h1>
               <h2 className="font-bold text-lg mt-7">Sign In With Google</h2>
-              <p>Sign in with Google authentication to generate your trip</p>
-              <Button
-                className="w-full mt-5 flex gap-4 items-center"
-                onClick={login}
-              >
-                <FcGoogle className="h-7 w-7" />
-                Sign In With Google
-              </Button>
+              <p>
+                Would you like to sign in with Google authentication to save
+                your trip?
+              </p>
+              <div className="flex gap-5">
+                <Button
+                  className="w-full mt-5 flex gap-4 items-center"
+                  onClick={login}
+                >
+                  <FcGoogle className="h-7 w-7" />
+                  Sign In With Google
+                </Button>
+                <Button
+                  className="w-full mt-5 flex gap-4 items-center"
+                  onClick={() => setOpenDialog(false)}
+                >
+                  No Thanks, View Trip
+                </Button>
+              </div>
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
